@@ -31,7 +31,7 @@ jobs:
 #      run: docker logs backend
 
     - name: Run Playwright tests
-      run: docker-compose run tests --reporter=json,html > playwright-results.json
+      run: docker-compose run tests npx playwright test --reporter=json,html > playwright-results.json
 
 #    - name: Run Playwright tests
 #      run: npx playwright test --reporter=json,html > playwright-results.json
