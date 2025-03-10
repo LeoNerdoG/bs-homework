@@ -4,6 +4,7 @@ WORKDIR /tests
 COPY package*.json ./
 RUN npm install
 COPY tests ./tests
+COPY playwright.config.ts /tests
 
 # Run Playwright tests
 CMD ["npx", "playwright", "test"]

@@ -94,7 +94,8 @@ app.get('/balance', (req, res) => {
     const balance = {
         userId,
         amount: Math.floor(Math.random() * 10000), // Simulated balance amount
-        currency: 'USD'
+        currency: assetType,
+        timestamp: new Date().toISOString()
     };
 
     res.status(200).json({ message: 'Here you go: Your Balance!', balance });

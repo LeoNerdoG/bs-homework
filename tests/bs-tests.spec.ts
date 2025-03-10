@@ -5,6 +5,7 @@ const BASE_URL = process.env.BASE_URL || 'http://localhost:4000';
 
 test.describe('API Tests for deposit, withdrawal and getting balance', () => {
 
+// Withdrawal tests
     test('Make a Withdrawal - Valid Request', async ({ request }) => {
         const response = await request.post(`${BASE_URL}/create/withdrawal`, {
             data: {
@@ -68,6 +69,7 @@ test.describe('API Tests for deposit, withdrawal and getting balance', () => {
                     });
 
 
+// Deposit tests
     test('Make a Deposit - Valid Request', async ({ request }) => {
         const response = await request.post(`${BASE_URL}/create/deposit`, {
             data: {
@@ -84,7 +86,8 @@ test.describe('API Tests for deposit, withdrawal and getting balance', () => {
         expect(responseBody.deposit).toHaveProperty('status', 'completed');
     });
 
-    test('Get Balance - Valid User', async ({ request }) => {
+// GET Balance tests
+    test('Get Balance - Valid User & Valid AssetType', async ({ request }) => {
         const userId = 'user123456';
         const response = await request.get(`${BASE_URL}/balance?userId=${userId}`);
 
@@ -96,16 +99,15 @@ test.describe('API Tests for deposit, withdrawal and getting balance', () => {
         expect(responseBody.balance.amount).toBeGreaterThanOrEqual(0);
     });
 
-        test('Get Balance - invalid User', async ({ request }) => {
-            const userId = 'user1234564456456';
-            const response = await request.get(`${BASE_URL}/balance?userId=${userId}`);
+    test('Get Balance - Valid User & Invalid AssetType', async ({ request }) => {
+        const userId = 'user123456';
+        const response = await request.get(`${BASE_URL}/balance?userId=${userId}`);
 
-            expect(response.status()).toBe(200);
-            const responseBody = await response.json();
-            expect(responseBody).toHaveProperty('message', 'Balance retrieved');
-            expect(responseBody).toHaveProperty('balance');
-            expect(responseBody.balance).toHaveProperty('userId', userId);
-            expect(responseBody.balance.amount).toBeGreaterThanOrEqual(0);
-        });
-
+        expect(response.status()).toBe(200);
+        const responseBody = await response.json();
+        expect(responseBody).toHaveProperty('message', 'Balance retrieved');
+        expect(responseBody).toHaveProperty('balance');
+        expect(responseBody.balance).toHaveProperty('userId', userId);
+        expect(responseBody.balance.amount).toBeGreaterThanOrEqual(0);
+    });
 });
