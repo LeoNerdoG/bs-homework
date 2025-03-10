@@ -1,0 +1,22 @@
+{
+  "name": "bs-homework",
+  "version": "1.0.0",
+  "description": "Homework assignement for Boerse Stuttgart",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeoNerdoG/bs-homework.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeoNerdoG/bs-homework/issues"
+  },
+  "homepage": "https://github.com/LeoNerdoG/bs-homework#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.51.0",
+    "@types/node": "^22.13.10"
+  }
+}

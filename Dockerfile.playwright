@@ -1,0 +1,9 @@
+# Use the official Playwright image
+FROM mcr.microsoft.com/playwright:v1.51.0-noble
+WORKDIR /tests
+COPY package*.json ./
+RUN npm install
+COPY tests ./tests
+
+# Run Playwright tests
+CMD ["npx", "playwright", "test"]

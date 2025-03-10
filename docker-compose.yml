@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.playwright
+    depends_on:
+      - app
+    networks:
+      - app-network
+    environment:
+      - BASE_URL=http://app:4000
+    command: ["npx", "playwright", "test"]
+
+networks:
+  app-network:
+    driver: bridge
