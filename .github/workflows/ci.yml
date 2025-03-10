@@ -27,8 +27,11 @@ jobs:
     - name: Check running containers
       run: docker ps -a
 
-    - name: Check logs
-      run: docker logs backend
+#    - name: Check logs
+#      run: docker logs backend
+
+    - name: Run Playwright tests
+      run: docker-compose run tests
 
     - name: Stop and clean up
       run: docker-compose down
