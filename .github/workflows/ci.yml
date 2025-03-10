@@ -12,11 +12,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Build docker images
-      run: docker-compose -f docker-compose.yml -f up -d
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Start Docker Compose services
+      run: docker-compose up -d --build
+
+    - name: Wait for services to be ready
+      run: sleep 30
 
     - name: Check running containers
       run: docker ps -a
 
     - name: Check logs
       run: docker logs backend
+
+    - name: Stop and clean up
+      run: docker-compose down

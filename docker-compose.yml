@@ -19,7 +19,8 @@ services:
       context: .
       dockerfile: Dockerfile.playwright
     depends_on:
-      - app
+      app:
+        condition: service_healthy
     networks:
       - app-network
     environment:
