@@ -28,17 +28,7 @@ jobs:
       run: docker ps -a
 
     - name: Run Playwright tests
-      run: docker-compose run --rm -T tests npx playwright test --output=/playwright-reports || true
+      run: docker-compose up --build
 
-#    - name: Run Playwright tests
-#      run: npx playwright test --reporter=json,html > playwright-results.json
-#
-#    - name: Extract Summary and Show in CI
-#      run: |
-#        PASSED=$(jq '[.suites[].specs[].tests[] | select(.status=="passed")] | length' playwright-results.json)
-#        FAILED=$(jq '[.suites[].specs[].tests[] | select(.status=="failed")] | length' playwright-results.json)
-#        echo "### Playwright Test Summary" >> $GITHUB_STEP_SUMMARY
-#        echo "- ✅ Passed: $PASSED" >> $GITHUB_STEP_SUMMARY
-#        echo "- ❌ Failed: $FAILED" >> $GITHUB_STEP_SUMMARY
     - name: Stop and clean up
       run: docker-compose down
