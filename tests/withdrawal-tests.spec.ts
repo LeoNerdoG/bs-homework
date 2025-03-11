@@ -82,7 +82,7 @@ test.describe('API Tests for withdrawal endpoint', () => {
         expect(responseBody).toHaveProperty('error', ["Invalid userId: Must be exactly 10 alphanumeric characters."]);
 	});
 
-	test('Make a Withdrawal - Invalid Request,userI containing symbols', async ({ request }) => {
+	test('Make a Withdrawal - Invalid Request, userId containing symbols', async ({ request }) => {
         const response = await request.post(`${BASE_URL}/create/withdrawal`, {
                 data: {
                 "userId": "user12345$",

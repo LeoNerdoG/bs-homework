@@ -42,6 +42,19 @@ const validatePartialRequest = (amount, assetType, address) => {
     return errors;
 }
 
+const validateGetRequest = (userId, assetType) => {
+    const errors = [];
+
+    if (!userId || !/^[a-zA-Z0-9]{10}$/.test(userId)) {
+        errors.push('Invalid userId: Must be exactly 10 alphanumeric characters.');
+    }
+    if (!assetType || !/^[A-Z]{3}$/.test(assetType)) {
+        errors.push('Invalid assetType: Must be exactly 3 uppercase letters.');
+    }
+
+    return errors;
+};
+
 app.post('/create/withdrawal', (req, res) => {
     const { assetType, amount, address, userId } = req.body;
     const errors = validateFullRequest(userId, amount, assetType, address);
@@ -84,33 +97,9 @@ app.post('/create/deposit', (req, res) => {
     res.status(201).json({ message: 'Deposit request has been created. Please hold...', deposit });
 });
 
-
-const validateGetRequest = (userId, assetType) => {
-    const errors = [];
-
-    if (!userId || !/^[a-zA-Z0-9]{10}$/.test(userId)) {
-        errors.push('Invalid userId: Must be exactly 10 alphanumeric characters.');
-    }
-    if (!userId || !/^[a-zA-Z0-9]{10}$/.test(userId)) {
-        errors.push('Invalid userId: Must be exactly 10 alphanumeric characters.');
-            }
-    if (amount === undefined || typeof amount !=='number' || isNaN(amount) || amount <= 0 || amount >= 100000) {
-        errors.push('Invalid amount: Must be between 0 and 100000.');
-    }
-
-    return errors;
-};
-
 app.get('/balance', (req, res) => {
     const { assetType, userId } = req.query;
-    const errors = [];
-
-       if (!userId || !/^[a-zA-Z0-9]{10}$/.test(userId)) {
-            errors.push('Invalid userId: Must be exactly 10 alphanumeric characters.');
-        }
-        if (!assetType || !/^[A-Z]{3}$/.test(assetType)) {
-            errors.push('Invalid assetType: Must be exactly 3 uppercase letters.');
-        }
+    const errors = validateGetRequest(userId, assetType);
 
         if (errors.length > 0) {
             return res.status(400).json({ error: errors });
@@ -121,10 +110,11 @@ app.get('/balance', (req, res) => {
         userId,
         amount: Math.floor(Math.random() * 10000), // Simulated balance amount
         currency: assetType,
+        status: 'completed',
         timestamp: new Date().toISOString()
     };
 
-    res.status(200).json({ message: 'Here you go: Your Balance!', balance });
+    res.status(200).json({ message: 'Here you go: Your Balance! Go buy yourself something nice for a change. :)', balance });
 });
 
 // Gracefully handle unknown endpoints
