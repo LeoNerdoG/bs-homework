@@ -35,9 +35,9 @@ jobs:
 
 #    - name: Generate Playwright Report (without waiting)
 #      run: npx playwright show-report --no-open
-#    - name: Run Playwright tests
-#      run: npx playwright test --reporter=json,html > playwright-results.json
-#
+    - name: Run Playwright tests
+      run: npx playwright test --reporter=json > playwright-results.json
+
     - name: Extract Summary and Show in CI
       run: |
         PASSED=$(jq '[.suites[].specs[].tests[] | select(.status=="passed")] | length' playwright-results.json)
