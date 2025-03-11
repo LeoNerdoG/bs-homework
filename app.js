@@ -76,6 +76,23 @@ app.post('/create/deposit', (req, res) => {
     res.status(201).json({ message: 'Deposit request has been created. Please hold...', deposit });
 });
 
+
+const validateGetRequest = (userId, assetType) => {
+    const errors = [];
+
+    if (!userId || !/^[a-zA-Z0-9]{10}$/.test(userId)) {
+        errors.push('Invalid userId: Must be exactly 10 alphanumeric characters.');
+    }
+    if (!userId || !/^[a-zA-Z0-9]{10}$/.test(userId)) {
+        errors.push('Invalid userId: Must be exactly 10 alphanumeric characters.');
+            }
+    if (amount === undefined || typeof amount !=='number' || isNaN(amount) || amount <= 0 || amount >= 100000) {
+        errors.push('Invalid amount: Must be between 0 and 100000.');
+    }
+
+    return errors;
+};
+
 app.get('/balance', (req, res) => {
     const { assetType, userId } = req.query;
 
