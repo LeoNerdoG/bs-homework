@@ -15,14 +15,22 @@ app.use((req, res, next) => {
 });
 
 // function for validating userId, amount, assetType and address
-const validateRequest = (userId, amount, assetType, address) => {
+const validateFullRequest = (userId, amount, assetType, address) => {
     const errors = [];
 
     if (!userId || !/^[a-zA-Z0-9]{10}$/.test(userId)) {
         errors.push('Invalid userId: Must be exactly 10 alphanumeric characters.');
     }
+	errors.push(...validatePartialRequest(amount, assetType, address));
+
+    return errors;
+};
+
+const validatePartialRequest = (amount, assetType, address) => {
+	const errors = [];
+
     if (amount === undefined || typeof amount !=='number' || isNaN(amount) || amount <= 0 || amount >= 100000) {
-        errors.push('Invalid amount: Must be between 0 and 100000.');
+        errors.push('Invalid amount: Must be between 1 and 100000.');
     }
     if (!assetType || !/^[A-Z]{3}$/.test(assetType)) {
         errors.push('Invalid assetType: Must be exactly 3 uppercase letters.');
@@ -32,11 +40,24 @@ const validateRequest = (userId, amount, assetType, address) => {
     }
 
     return errors;
+}
+
+const validateGetRequest = (userId, assetType) => {
+    const errors = [];
+
+    if (!userId || !/^[a-zA-Z0-9]{10}$/.test(userId)) {
+        errors.push('Invalid userId: Must be exactly 10 alphanumeric characters.');
+    }
+    if (!assetType || !/^[A-Z]{3}$/.test(assetType)) {
+        errors.push('Invalid assetType: Must be exactly 3 uppercase letters.');
+    }
+
+    return errors;
 };
 
 app.post('/create/withdrawal', (req, res) => {
     const { assetType, amount, address, userId } = req.body;
-    const errors = validateRequest(userId, amount, assetType, address);
+    const errors = validateFullRequest(userId, amount, assetType, address);
 
     if (errors.length > 0) {
         return res.status(400).json({ error: errors });
@@ -57,10 +78,10 @@ app.post('/create/withdrawal', (req, res) => {
 
 app.post('/create/deposit', (req, res) => {
     const { assetType, amount, address } = req.body;
-    const errors = validateRequest(amount, assetType, address);
+    const errors = validatePartialRequest(amount, assetType, address);
 
-    if (!assetType || !amount || !address) {
-        return res.status(400).json({ error: 'You are missing some required fields. Mandatory fields are assetType, amount and address' });
+    if (errors.length > 0) {
+        return res.status(400).json({ error: errors });
     }
 
     // Simulate processing deposit (this would normally interact with a database)
@@ -78,13 +99,7 @@ app.post('/create/deposit', (req, res) => {
 
 app.get('/balance', (req, res) => {
     const { assetType, userId } = req.query;
-
-       if (!userId || !/^[a-zA-Z0-9]{10}$/.test(userId)) {
-            errors.push('Invalid userId: Must be exactly 10 alphanumeric characters.');
-        }
-        if (!assetType || !/^[A-Z]{3}$/.test(assetType)) {
-            errors.push('Invalid assetType: Must be exactly 3 uppercase letters.');
-        }
+    const errors = validateGetRequest(userId, assetType);
 
         if (errors.length > 0) {
             return res.status(400).json({ error: errors });
@@ -94,10 +109,12 @@ app.get('/balance', (req, res) => {
     const balance = {
         userId,
         amount: Math.floor(Math.random() * 10000), // Simulated balance amount
-        currency: 'USD'
+        currency: assetType,
+        status: 'completed',
+        timestamp: new Date().toISOString()
     };
 
-    res.status(200).json({ message: 'Here you go: Your Balance!', balance });
+    res.status(200).json({ message: 'Here you go: Your Balance! Go buy yourself something nice for a change. :)', balance });
 });
 
 // Gracefully handle unknown endpoints
