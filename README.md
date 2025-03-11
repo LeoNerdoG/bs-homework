@@ -32,12 +32,12 @@ with Docker. Everything should be running on a CI and there should be a report o
  - IDE of your choice
 
 ### How to run tests locally
-You can run tests locally in two ways. Directly with Playwright command:
-`npx Playwright test`
+You can run tests locally in two ways. 
+1. Directly with Playwright command: `npx Playwright test`
 
 (In this case you need to start the app with command: `node app.js`, otherwise it will not work.)
 
-Or you can run the app and tests with docker compose by running the command:
+2. Or you can run the app and tests with docker compose by running the command:
 `docker compose up --build`  
 
 (in this case do not run the app with command `node app.js`, otherwise you will get an error that the port is already in use)
