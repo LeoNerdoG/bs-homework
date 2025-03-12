@@ -36,6 +36,6 @@ jobs:
     - name: Run Playwright tests & cleanup
       run: |
         docker-compose up --build -d # Start in detached mode
-        docker-compose exec app npx playwright test
+        docker-compose run --rm app npx playwright test
         docker-compose down
 
