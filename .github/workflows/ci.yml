@@ -12,6 +12,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: install Express with dependencies
+      run: npm install express
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
@@ -27,18 +30,8 @@ jobs:
     - name: Check running containers
       run: docker ps -a
 
-    - name: Run Playwright tests
-      run: docker-compose run --rm -T tests npx playwright test --output=/playwright-reports || true
+    - name: Run Playwright tests & cleanup
+      run: |
+        docker-compose up --build --abort-on-container-exit
+        docker-compose down
 
-#    - name: Run Playwright tests
-#      run: npx playwright test --reporter=json,html > playwright-results.json
-#
-#    - name: Extract Summary and Show in CI
-#      run: |
-#        PASSED=$(jq '[.suites[].specs[].tests[] | select(.status=="passed")] | length' playwright-results.json)
-#        FAILED=$(jq '[.suites[].specs[].tests[] | select(.status=="failed")] | length' playwright-results.json)
-#        echo "### Playwright Test Summary" >> $GITHUB_STEP_SUMMARY
-#        echo "- ✅ Passed: $PASSED" >> $GITHUB_STEP_SUMMARY
-#        echo "- ❌ Failed: $FAILED" >> $GITHUB_STEP_SUMMARY
-    - name: Stop and clean up
-      run: docker-compose down

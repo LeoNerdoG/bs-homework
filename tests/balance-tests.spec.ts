@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 
-// I am running this locally
 const BASE_URL = process.env.BASE_URL || 'http://localhost:4000';
 
 test.describe('API Tests for balance endpoint', () => {

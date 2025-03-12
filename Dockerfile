@@ -1,10 +1,10 @@
-FROM node:18
+FROM node:22
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
 # Expose the port!
-EXPOSE 3000
+EXPOSE 4000
 
 # Start the API server
 CMD ["node", "app.js"]
