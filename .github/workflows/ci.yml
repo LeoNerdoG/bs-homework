@@ -12,9 +12,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: install Playwright with dependencies
-      run: npx playwright install
-
     - name: install Express with dependencies
       run: npm install express
 
@@ -35,7 +32,6 @@ jobs:
 
     - name: Run Playwright tests & cleanup
       run: |
-        docker-compose up --build -d # Start in detached mode
-        docker-compose run --rm app npx playwright test
+        docker-compose up --build
         docker-compose down
 
