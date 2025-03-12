@@ -33,8 +33,9 @@ jobs:
     - name: Check running containers
       run: docker ps -a
 
-    - name: Run Playwright tests
-      run: docker-compose up --build
+    - name: Run Playwright tests & cleanup
+      run: |
+        docker-compose up --build -d # Start in detached mode
+        docker-compose exec app npx playwright test
+        docker-compose down
 
-    - name: Stop and clean up
-      run: docker-compose down
