@@ -38,7 +38,7 @@ jobs:
     - name: Publish Test Report
       uses: ctrf-io/github-test-reporter@v1
       with:
-        report-path: './playwright-results.json'
+        report-path: './*.json'
         pull-request-report: true
       if: always()
 
