@@ -13,10 +13,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: install Playwright with dependencies
-      uses: npx playwright install
+      run: npx playwright install
 
     - name: install Express with dependencies
-      uses: npm install express
+      run: npm install express
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
