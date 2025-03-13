@@ -35,3 +35,10 @@ jobs:
         docker-compose up --build --abort-on-container-exit
         docker-compose down
 
+    - name: Publish Test Report
+      uses: ctrf-io/github-test-reporter@v1
+      with:
+        report-path: './*.json'
+        pull-request-report: true
+      if: always()
+
